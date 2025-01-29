@@ -12,12 +12,16 @@ class Signup(models.Model):
         return self.username
 
 
+class User(models.Model):
+    userid = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+
 class Post(models.Model):
-    user = models.ForeignKey(Signup, on_delete=models.CASCADE, related_name="posts")
+    postid = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
-    hashtags = models.JSONField(default=list)
-    urls = models.JSONField(default=list) 
+    hashtags = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Post by {self.user.username} on {self.created_at}"
+class Hashtag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
