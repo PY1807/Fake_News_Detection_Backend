@@ -53,3 +53,17 @@ def extract_mobile_number(token):
         return mobile_number
     else:
         return None
+
+def verify_jwt(token):
+    try:
+      
+        decoded_payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        
+        return JsonResponse({"valid": True, "data": decoded_payload})
+    
+    except ExpiredSignatureError:
+        return JsonResponse({"error": "Token has expired"})
+    
+    except InvalidTokenError:
+        return JsonResponse({"error": "Invalid token"})
+
