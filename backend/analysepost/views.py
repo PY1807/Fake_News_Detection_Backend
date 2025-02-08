@@ -13,8 +13,8 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 import time
-from .utils import generate_token
-from .utils import extract_mobile_number
+from .utils import generate_token,extract_mobile_number
+
 
 
 def index(request):
