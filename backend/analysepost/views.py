@@ -50,6 +50,7 @@ def getpost_from_hashtag(request):
     for post in posts:
         if hashtag in post['hastags']:
             store.append(post)
+    return JsonResponse({"posts":store})
 
 @api_view(['POST'])
 def signup_user(request):
