@@ -13,8 +13,8 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 import time
-from .utils import generate_token,extract_mobile_number
-
+from .utils import generate_token
+from .utils import extract_mobile_number,verify_jwt
 
 
 def index(request):
@@ -41,17 +41,30 @@ def get_all_posts(request):
     
     return JsonResponse({"posts": formatted_posts})
 
+@api_view(['GET'])
+def get_trending_posts(request):
+    posts =Post.find({})
+    mp={}
+    for post in posts:
+        for hashtag in post['hashtags']:
+            mp[hashtag]=mp.get(hashtag,0)+1
+    top_5_hashtags = [key for key, _ in sorted(mp.items(), key=lambda item: item[1], reverse=True)[:5]]
+    return JsonResponse({"trending_posts":top_5_hashtags})
+
+
+
 @api_view(['POST'])
 def getpost_from_hashtag(request):
     data=json.loads(request.body)
-    hashtag=data['hastag']
+    hashtag=data['hashtag']
     posts = Post.find({})
-    store=[]
+    store = []
     for post in posts:
-        if hashtag in post['hastags']:
+        if hashtag in post['hashtags']:
+            post['_id'] = str(post['_id'])  # Convert ObjectId to string
             store.append(post)
-    return JsonResponse({"posts":store})
 
+    return JsonResponse({"posts": store}, safe=False)
 @api_view(['POST'])
 def signup_user(request):
     
@@ -128,3 +141,21 @@ def create_post(request):
     Post.insert_one(post_dict)
 
     return JsonResponse({"status": "successful", "message": "Post created successfully"})
+
+@api_view(['POST'])
+def login_user(request):
+
+    data=json.loads(request.body)
+    token=data['token']
+    result=verify_jwt(token)
+    result = json.loads(result.content) 
+   
+    mobile_number=result["data"]["mobile"]
+    user=User.find_one({"contact_number":mobile_number})
+    
+    if user:
+        result["username"] = user.get("username", "")
+    
+    return JsonResponse(result)
+
+    
