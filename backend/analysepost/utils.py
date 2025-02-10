@@ -30,8 +30,10 @@ def detect_fake_news(data):
 
 import jwt
 import datetime
+from jwt import ExpiredSignatureError, InvalidTokenError
+from django.http import JsonResponse
 
-SECRET_KEY = 'your-secret-key'
+SECRET_KEY = "Code"
 
 def generate_token(mobile_number):
     expiration_time = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)
@@ -53,6 +55,8 @@ def extract_mobile_number(token):
         return mobile_number
     else:
         return None
+    
+
 
 def verify_jwt(token):
     try:
