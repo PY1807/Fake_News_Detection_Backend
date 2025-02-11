@@ -149,7 +149,8 @@ def login_user(request):
     token = data['headers'].get('Authorization', "")
     result=verify_jwt(token)
     result = json.loads(result.content) 
-   
+    if("data" not in result.keys()):
+        return JsonResponse(result)
     mobile_number=result["data"]["mobile"]
     user=User.find_one({"contact_number":mobile_number})
     
