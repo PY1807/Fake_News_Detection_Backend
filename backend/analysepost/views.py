@@ -146,7 +146,7 @@ def create_post(request):
 def login_user(request):
 
     data=json.loads(request.body)
-    token=data['token']
+    token = data['headers'].get('Authorization', "")
     result=verify_jwt(token)
     result = json.loads(result.content) 
    
