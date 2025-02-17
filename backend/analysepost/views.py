@@ -114,6 +114,7 @@ def create_post(request):
     
    
     content = data.get('content', '')
+    title= data.get('title', '')
     
    
     hashtags = re.findall(r'#\w+', content)   
@@ -131,6 +132,7 @@ def create_post(request):
     # print(" dnj",user_instance)
     post = Post1(
         username=username,
+        title=title,
         content=content_cleaned.strip(),  # 
         hashtags=hashtags,
         urls=urls,
