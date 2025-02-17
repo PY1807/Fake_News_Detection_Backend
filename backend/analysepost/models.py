@@ -31,7 +31,8 @@ class Signup(models.Model):
 
 class Post1(models.Model):
     user = models.ForeignKey(Signup, on_delete=models.CASCADE, related_name="posts")
-    username=models.CharField(max_length=50)
+    title=models.CharField(max_length=30)
+    username=models.CharField(max_length=16)
     content = models.TextField()
     hashtags = models.JSONField(default=list)
     urls = models.JSONField(default=list) 
