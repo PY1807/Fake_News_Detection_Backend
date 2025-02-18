@@ -6,9 +6,7 @@ Post=db['Post']
 
 
 class Signup(models.Model):
-    username = models.CharField(max_length=150, unique=True)
-    firstName = models.CharField(max_length=255)
-    lastName = models.CharField(max_length=255)
+    name = models.CharField(max_length=16, unique=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)  
     contact_number = models.CharField(max_length=12)
@@ -30,12 +28,14 @@ class Signup(models.Model):
 
 
 class Post1(models.Model):
-    user = models.ForeignKey(Signup, on_delete=models.CASCADE, related_name="posts")
-    title=models.CharField(max_length=30)
-    username=models.CharField(max_length=16)
+    
+    name=models.CharField(max_length=16)
+    title=models.CharField(max_length=20)
     content = models.TextField()
+    text = models.TextField()
     hashtags = models.JSONField(default=list)
     urls = models.JSONField(default=list) 
+    result = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
