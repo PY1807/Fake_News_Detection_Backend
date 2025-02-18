@@ -1,5 +1,29 @@
 def sentiment_analysis(text):
-    pass
+    return {
+    "NewsChecker": {
+        "news_authenticity": "Real/Fake",
+        "reason": "Reason by LLM",
+        "remarks": "Done/Error"
+    },
+    "StructureAnalyzer": {
+        "news_authenticity": "Real/Fake",
+        "reason": "Reason by ML model depending upon the structure of content such as grammatical mistakes, punctuation errors, presence of hashtags, URLs, etc.",
+        "remarks": "Done/Error"
+    },
+    "SemanticAnalyzer": {
+        "news_authenticity": "Real/Fake",
+        "reason": "Reason using LSTM model depending upon the semantic meaning of content",
+        "confidence_score": 0.85,
+        "remarks": "Done/Error"
+    },
+    "EvidenceVerifier": {
+        "news_authenticity": "Real/Fake",
+        "reason": "Reason after verifying the posted article and provided evidence",
+        "semantic_similarity_score": 0.5,
+        "remarks": "Done/Error"
+    }
+}
+
 
 def entity_extraction(text):
     pass
