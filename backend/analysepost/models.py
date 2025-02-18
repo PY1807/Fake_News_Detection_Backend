@@ -36,6 +36,7 @@ class Post1(models.Model):
     hashtags = models.JSONField(default=list)
     urls = models.JSONField(default=list) 
     result = models.JSONField(default=dict)
+    final_result = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
