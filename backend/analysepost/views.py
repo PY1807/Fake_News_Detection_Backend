@@ -76,14 +76,16 @@ def get_trending_posts(request):
 
 @api_view(['GET'])
 def getpost_from_hashtag(request):
+    hashtag = request.GET.get('query', '')
     token = request.headers.get('Authorization', "")
+    hashtag="#"+hashtag
 
     result=verify_jwt(token)
     result = json.loads(result.content) 
     if("data" not in result.keys()):
         return JsonResponse(result)
-    data=json.loads(request.body)
-    hashtag=data['hashtag']
+    # data=json.loads(request.body)
+    # hashtag=data['hashtag']
     posts = Post.find({})
     store = []
     for post in posts:
@@ -170,7 +172,8 @@ def create_post(request):
         title=data.get('title',''),
         content=data.get('content',''),
         text=content_cleaned.strip(), 
-         result=result, # 
+        result=result, #
+        
         hashtags=hashtags,
         urls=urls,
         created_at=time.ctime(curr)
@@ -260,5 +263,25 @@ def verify(request):
     result=sentiment_analysis(text)
     return JsonResponse({"result":result})
 
+@api_view(['GET'])
+def get_fake_posts(request):
+    token = request.headers.get('Authorization', "")
 
-
+    result=verify_jwt(token)
+    result = json.loads(result.content) 
+    if("data" not in result.keys()):
+        return JsonResponse(result)
+    
+    posts_cursor = Post.find({})
+    
+    posts_list = list(posts_cursor)
+    
+    formatted_posts = []
+    for post in posts_list:
+        if not post['final_result'] :
+            not_required=['_id','text','urls','hashtags','final'] 
+            post_data = {key: value for key, value in post.items() if key not in not_required}  # 
+            formatted_posts.append(post_data)
+        
+   
+    return JsonResponse({"posts": formatted_posts})
